@@ -18,3 +18,18 @@ export const setStatusBarStyle = ({
   StatusBar.setHidden(hidden, "fade"); // Optionally, you can use 'slide' for animation
   StatusBar.setTranslucent?.(translucent); // Only works on Android
 };
+
+export function boxShadow(
+  color: string,
+  offset = { height: 2, width: 2 },
+  radius = 8,
+  opacity = 0.2,
+) {
+  return {
+    shadowColor: color,
+    shadowOffset: offset,
+    shadowOpacity: opacity,
+    shadowRadius: radius,
+    elevation: radius,
+  };
+}

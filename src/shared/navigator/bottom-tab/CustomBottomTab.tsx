@@ -1,6 +1,7 @@
 import React from 'react';
 import TabItem from './TabItem';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import {boxShadow} from '../../utils/functions';
 import {StyleSheet, View} from 'react-native';
 
 const CustomBottomTab = ({
@@ -9,7 +10,11 @@ const CustomBottomTab = ({
   navigation,
 }: BottomTabBarProps) => {
   return (
-    <View style={[styles.container]}>
+    <View
+      style={[
+        styles.container,
+        boxShadow('#000', {height: 0, width: 5}, 6.27, 0.34),
+      ]}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -61,6 +66,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 12,
     backgroundColor: 'white',
-    position: 'relative'
+    position: 'relative',
   },
 });
