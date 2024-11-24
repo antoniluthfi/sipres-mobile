@@ -1,5 +1,5 @@
 import React from 'react';
-import RootStack from './src/shared/navigator/RootStack';
+import RootStack from './src/shared/navigator/root-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 

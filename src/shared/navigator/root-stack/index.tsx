@@ -1,10 +1,11 @@
-import LoginScreen from '../../pages/login';
+import BottomTab from '../bottom-tab';
+import LoginScreen from '../../../pages/login';
 import React from 'react';
-import SplashScreen from '../../pages/splash';
+import SplashScreen from '../../../pages/splash';
 import {createStackNavigator} from '@react-navigation/stack';
-import {SCREEN_OPTIONS} from '../utils/screen-options';
+import {SCREEN_OPTIONS} from '../../utils/screen-options';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const RootStack = () => {
   return (
@@ -17,6 +18,11 @@ const RootStack = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={SCREEN_OPTIONS.DEFAULT}
+      />
+      <Stack.Screen
+        name="MainTab"
+        component={BottomTab}
         options={SCREEN_OPTIONS.DEFAULT}
       />
     </Stack.Navigator>

@@ -6,9 +6,14 @@ import {COLORS} from '../../shared/utils/colors';
 import {Eye, Mail} from 'lucide-react-native';
 import {FONTS} from '../../shared/utils/fonts';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 
+type Props = NavigationProp<RootStackParamList, 'Login'>;
+
 const LoginScreen = () => {
+  const navigation = useNavigation<Props>();
+
   const [inputValue, setInputValue] = useState({
     email: '',
     password: '',
@@ -41,7 +46,11 @@ const LoginScreen = () => {
         secureTextEntry
       />
 
-      <Button title="Login" containerStyle={{marginTop: 40}} />
+      <Button
+        title="Login"
+        containerStyle={{marginTop: 40}}
+        onPress={() => navigation.navigate('MainTab')}
+      />
     </View>
   );
 };

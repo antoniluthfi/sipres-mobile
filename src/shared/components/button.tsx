@@ -6,11 +6,12 @@ import {FONTS} from '../utils/fonts';
 type ButtonProps = {
   containerStyle?: ViewStyle;
   title: string;
+  onPress?: () => void;
 };
 
-const Button = ({title, containerStyle}: ButtonProps) => {
+const Button = ({title, containerStyle, onPress}: ButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.button, containerStyle]}>
+    <TouchableOpacity style={[styles.button, containerStyle]} onPress={onPress}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
