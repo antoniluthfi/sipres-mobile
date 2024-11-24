@@ -1,0 +1,1 @@
+export const BgLogin = require('./bg_login.png');
