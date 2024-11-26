@@ -17,6 +17,7 @@ type InputProps = {
   keyboardType?: KeyboardTypeOptions;
   rightIcon?: ReactNode;
   secureTextEntry?: boolean;
+  disabled?: boolean;
 };
 
 const Input = ({
@@ -27,6 +28,7 @@ const Input = ({
   keyboardType,
   rightIcon,
   secureTextEntry,
+  disabled,
 }: InputProps) => {
   const [text, onChangeText] = useState('');
 
@@ -44,7 +46,11 @@ const Input = ({
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.inputContainer,
+          {backgroundColor: disabled ? COLORS.DISABLE : 'white'},
+        ]}>
         {rightIcon}
         <TextInput
           style={styles.input}
@@ -53,6 +59,7 @@ const Input = ({
           placeholder={placeholder}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
+          editable={!disabled}
         />
       </View>
     </View>
