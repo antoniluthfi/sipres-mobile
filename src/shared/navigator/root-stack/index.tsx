@@ -1,5 +1,6 @@
 import BottomTab from '../bottom-tab';
 import LoginScreen from '../../../pages/login';
+import PermissionScreen from '../../../pages/permission';
 import React from 'react';
 import SplashScreen from '../../../pages/splash';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -23,6 +24,11 @@ const RootStack = () => {
       <Stack.Screen
         name="MainTab"
         component={BottomTab}
+        options={SCREEN_OPTIONS.DEFAULT}
+      />
+      <Stack.Screen
+        name="Permission"
+        component={PermissionScreen}
         options={SCREEN_OPTIONS.DEFAULT}
       />
     </Stack.Navigator>

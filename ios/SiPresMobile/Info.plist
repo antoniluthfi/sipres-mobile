@@ -59,5 +59,23 @@
 		<string>Poppins-SemiBold.ttf</string>
 		<string>Poppins-Thin.ttf</string>
 	</array>
+
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to your Gallery.</string>
+
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires location access to provide personalized recommendations and track your location for better service.</string>
+
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>TrackUserLocation</key>
+		<string>Temporary location access is needed to ensure data accuracy during specific sessions.</string>
+	</dict>
+
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires location access while in use to offer location-based services such as maps and nearby recommendations.</string>
 </dict>
 </plist>

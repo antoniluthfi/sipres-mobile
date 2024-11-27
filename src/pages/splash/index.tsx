@@ -3,7 +3,10 @@ import {COLORS} from '../../shared/utils/colors';
 import {FONTS} from '../../shared/utils/fonts';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Logo} from '../../assets/icons';
-import {setStatusBarStyle} from '../../shared/utils/functions';
+import {
+  requestCustomPermissions,
+  setStatusBarStyle,
+} from '../../shared/utils/functions';
 import {useNavigation} from '@react-navigation/native';
 
 const SplashScreen = () => {
@@ -16,11 +19,7 @@ const SplashScreen = () => {
     });
 
     setTimeout(() => {
-      if (false) {
-        navigation.replace('MainTab');
-      } else {
-        navigation.replace('Login');
-      }
+      requestCustomPermissions();
     }, 1000);
   }, []);
 
