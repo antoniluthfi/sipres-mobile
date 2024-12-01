@@ -1,23 +1,46 @@
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
 import React, {useEffect, useState} from 'react';
+import useAuthStore from '../../shared/data-store/useAuthStore';
+import useAxios from '../../shared/hooks/useAxios';
+import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import {BgLogin} from '../../assets/images';
 import {COLORS} from '../../shared/utils/colors';
 import {Eye, Mail} from 'lucide-react-native';
 import {FONTS} from '../../shared/utils/fonts';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
-
-type Props = NavigationProp<RootStackParamList, 'Login'>;
+import {useNavigation} from '@react-navigation/native';
 
 const LoginScreen = () => {
-  const navigation = useNavigation<Props>();
+  const navigation = useNavigation<any>();
+  const api = useAxios();
+  const setIsLogin = useAuthStore((state: any) => state.setIsLogin);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
-    email: '',
-    password: '',
+    email: 'antoni@gmail.com',
+    password: '12345678',
   });
+
+  const login = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await api.post('/auth/login', {
+        email: inputValue.email,
+        password: inputValue.password,
+      });
+
+      if (response.data?.message === 'Berhasil masuk') {
+        setIsLogin(true);
+        navigation.replace('MainTab');
+      }
+    } catch (error: any) {
+      Alert.alert('Warning', error?.error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     setStatusBarStyle({style: 'dark-content', backgroundColor: 'white'});
@@ -49,7 +72,8 @@ const LoginScreen = () => {
       <Button
         title="Login"
         containerStyle={{marginTop: 40}}
-        onPress={() => navigation.navigate('MainTab')}
+        onPress={login}
+        isLoading={isLoading}
       />
     </View>
   );

@@ -3,11 +3,11 @@ import {COLORS} from '../../shared/utils/colors';
 import {FONTS} from '../../shared/utils/fonts';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Logo} from '../../assets/icons';
+import {useNavigation} from '@react-navigation/native';
 import {
   requestCustomPermissions,
   setStatusBarStyle,
 } from '../../shared/utils/functions';
-import {useNavigation} from '@react-navigation/native';
 
 const SplashScreen = () => {
   const navigation = useNavigation<any>();
@@ -19,7 +19,14 @@ const SplashScreen = () => {
     });
 
     setTimeout(() => {
-      requestCustomPermissions();
+      requestCustomPermissions({
+        onSuccess: () => {
+          navigation.replace('Login');
+        },
+        onFailed: () => {
+          navigation.replace('Permission');
+        },
+      });
     }, 1000);
   }, []);
 

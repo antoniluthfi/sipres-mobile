@@ -1,15 +1,33 @@
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
-import React from 'react';
+import React, {useState} from 'react';
+import useAxios from '../../shared/hooks/useAxios';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {DummyProfile} from '../../assets/images';
-import {Image, StyleSheet, View} from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-
-type Props = NavigationProp<RootStackParamList, 'MainTab'>;
+import {useAuth} from '../../shared/context/AuthContext';
 
 const ProfileScreen = () => {
-  const navigation = useNavigation<Props>();
+  const api = useAxios();
+  const {logout} = useAuth();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.get('/auth/logout');
+
+      if (response.data?.message === 'Berhasil logout') {
+        logout();
+      }
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert('Warning', error?.error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,7 +68,8 @@ const ProfileScreen = () => {
       <Button
         title="Logout"
         containerStyle={{backgroundColor: 'red'}}
-        onPress={() => navigation.navigate('Login')}
+        onPress={handleLogout}
+        isLoading={isLoading}
       />
     </View>
   );

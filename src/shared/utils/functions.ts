@@ -1,6 +1,5 @@
-import {Alert, Dimensions, Linking, Platform, StatusBar} from 'react-native';
+import {Alert, Dimensions, Platform, StatusBar} from 'react-native';
 import {ANDROID_PERMISSION_LIST, IOS_PERMISSION_LIST} from './permissions';
-import {navigate} from './navigation-service';
 import {
   PERMISSIONS,
   requestMultiple,
@@ -42,7 +41,13 @@ export function boxShadow(
   };
 }
 
-export const requestCustomPermissions = async () => {
+export const requestCustomPermissions = async ({
+  onSuccess,
+  onFailed,
+}: {
+  onSuccess: () => void;
+  onFailed: () => void;
+}) => {
   if (Platform.OS === 'ios') {
     const statuses = await requestMultiple(IOS_PERMISSION_LIST);
 
@@ -74,9 +79,9 @@ export const requestCustomPermissions = async () => {
       );
 
       if (res) {
-        navigate('Permission');
+        onFailed();
       } else {
-        navigate('Login');
+        onSuccess();
       }
     });
   }
