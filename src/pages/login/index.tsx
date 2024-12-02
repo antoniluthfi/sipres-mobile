@@ -1,7 +1,6 @@
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
 import React, {useEffect, useState} from 'react';
-import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
 import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import {BgLogin} from '../../assets/images';
@@ -9,12 +8,13 @@ import {COLORS} from '../../shared/utils/colors';
 import {Eye, Mail} from 'lucide-react-native';
 import {FONTS} from '../../shared/utils/fonts';
 import {setStatusBarStyle} from '../../shared/utils/functions';
+import {useAuth} from '../../shared/context/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 
 const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const api = useAxios();
-  const setIsLogin = useAuthStore((state: any) => state.setIsLogin);
+  const {login} = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
@@ -22,7 +22,7 @@ const LoginScreen = () => {
     password: '12345678',
   });
 
-  const login = async () => {
+  const handleLogin = async () => {
     try {
       setIsLoading(true);
 
@@ -32,10 +32,11 @@ const LoginScreen = () => {
       });
 
       if (response.data?.message === 'Berhasil masuk') {
-        setIsLogin(true);
+        login();
         navigation.replace('MainTab');
       }
     } catch (error: any) {
+      console.log('error login: ', error);
       Alert.alert('Warning', error?.error);
     } finally {
       setIsLoading(false);
@@ -72,7 +73,7 @@ const LoginScreen = () => {
       <Button
         title="Login"
         containerStyle={{marginTop: 40}}
-        onPress={login}
+        onPress={handleLogin}
         isLoading={isLoading}
       />
     </View>

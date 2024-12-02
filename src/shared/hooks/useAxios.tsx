@@ -1,10 +1,8 @@
 import axios from 'axios';
-import {useAuth} from '../context/AuthContext';
 import Config from '../config/env.json';
+import useAuthStore from '../data-store/useAuthStore';
 
 const useAxios = () => {
-  const {logout} = useAuth();
-
   const api = axios.create({
     baseURL: Config.API_URL,
     timeout: 10000,
@@ -28,7 +26,11 @@ const useAxios = () => {
     async error => {
       if (error.response?.status === 401) {
         // Token kadaluwarsa
-        logout();
+        try {
+          await api.get('/auth/refresh-token');
+        } catch (error) {
+          useAuthStore.getState().setRefreshTokenValid(false);
+        }
       }
       return Promise.reject(error.response.data);
     },

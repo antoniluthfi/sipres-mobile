@@ -1,15 +1,22 @@
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
 import React, {useState} from 'react';
+import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
 import {Alert, Image, StyleSheet, View} from 'react-native';
 import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {DummyProfile} from '../../assets/images';
 import {useAuth} from '../../shared/context/AuthContext';
+import {useShallow} from 'zustand/shallow';
 
 const ProfileScreen = () => {
   const api = useAxios();
   const {logout} = useAuth();
+  const {userData} = useAuthStore(
+    useShallow((state: any) => ({
+      userData: state.userData,
+    })),
+  );
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +39,13 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={DummyProfile}
+        source={
+          userData?.proile_url
+            ? {
+                uri: userData?.proile_url,
+              }
+            : DummyProfile
+        }
         style={styles.profileImage}
         resizeMode="contain"
       />
@@ -41,19 +54,19 @@ const ProfileScreen = () => {
         <Input label="Nama" value="Antoni" disabled rightIcon={<User />} />
         <Input
           label="NPM"
-          value="207006068"
+          value={userData?.identification_number || '-'}
           disabled
           rightIcon={<GraduationCap />}
         />
         <Input
           label="Email"
-          value="antoni@gmail.com"
+          value={userData?.email || '-'}
           disabled
           rightIcon={<Mail />}
         />
         <Input
           label="No. Telpon"
-          value="08212345678"
+          value={userData?.phone_number || '-'}
           disabled
           rightIcon={<Phone />}
         />
