@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import Config from '../config/env.json';
 import useAuthStore from '../data-store/useAuthStore';
 
@@ -32,7 +32,11 @@ const useAxios = () => {
           useAuthStore.getState().setRefreshTokenValid(false);
         }
       }
-      return Promise.reject(error.response.data);
+      return Promise.reject(
+        error?.response?.data || {
+          error: 'Internal server error',
+        },
+      );
     },
   );
 

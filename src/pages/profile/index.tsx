@@ -1,6 +1,6 @@
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
 import {Alert, Image, StyleSheet, View} from 'react-native';
@@ -8,6 +8,8 @@ import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {DummyProfile} from '../../assets/images';
 import {useAuth} from '../../shared/context/AuthContext';
 import {useShallow} from 'zustand/shallow';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from '../../shared/utils/functions';
 
 const ProfileScreen = () => {
   const api = useAxios();
@@ -35,6 +37,15 @@ const ProfileScreen = () => {
       setIsLoading(false);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle({
+        style: 'dark-content',
+        backgroundColor: 'white',
+      });
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
