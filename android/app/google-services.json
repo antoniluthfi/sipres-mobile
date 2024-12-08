@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "399424467881",
+    "project_id": "sipres-ef166",
+    "storage_bucket": "sipres-ef166.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399424467881:android:84bdfd22764408a5048ab8",
+        "android_client_info": {
+          "package_name": "com.sipresmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1v88Ae3_CrX6zlGq7SdzHhulzd7xWKrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
