@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 type InputProps = {
-  label: string;
+  label?: string;
   value?: string;
   onChange?: (val: string) => void;
   placeholder?: string;
@@ -45,7 +45,7 @@ const Input = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <View
         style={[
           styles.inputContainer,

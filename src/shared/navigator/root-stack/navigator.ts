@@ -3,4 +3,8 @@ type RootStackParamList = {
   Login: undefined;
   MainTab: undefined;
   Permission: undefined;
+  ScanQr: {
+    courseId: number;
+    courseMeetingId: number;
+  }
 }

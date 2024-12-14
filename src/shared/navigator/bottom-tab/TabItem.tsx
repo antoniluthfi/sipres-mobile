@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {CalendarClock, Home, User} from 'lucide-react-native';
 import {COLORS} from '../../utils/colors';
-import {Home, ScanQrCode, User} from 'lucide-react-native';
 import {FONTS} from '../../utils/fonts';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 type TabItemProps = {
   title: string;
@@ -18,39 +18,20 @@ const TabItem: React.FC<TabItemProps> = ({
   onLongPress,
 }) => {
   const Icon = () => {
-    if (title === 'Home') {
+    if (title === 'Beranda') {
       return <Home color={active ? COLORS.PRIMARY : COLORS.SECONDARY} />;
     }
 
-    if (title === 'Scan') {
-      return <ScanQrCode color={'white'} />;
+    if (title === 'Jadwal Kuliah') {
+      return (
+        <CalendarClock color={active ? COLORS.PRIMARY : COLORS.SECONDARY} />
+      );
     }
 
-    if (title === 'Profile') {
+    if (title === 'Profil') {
       return <User color={active ? COLORS.PRIMARY : COLORS.SECONDARY} />;
     }
   };
-
-  if (title === 'Scan') {
-    return (
-      <TouchableOpacity
-        onPress={onPress}
-        onLongPress={onLongPress}
-        style={styles.scanMenu}>
-        <Icon />
-        <Text
-          style={[
-            styles.text,
-            {
-              color: 'white',
-              fontFamily: active ? FONTS.POPPINS_BOLD : FONTS.POPPINS_REGULAR,
-            },
-          ]}>
-          SCAN
-        </Text>
-      </TouchableOpacity>
-    );
-  }
 
   return (
     <TouchableOpacity
@@ -81,15 +62,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     marginTop: 4,
-  },
-  scanMenu: {
-    backgroundColor: COLORS.PRIMARY,
-    borderRadius: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    position: 'absolute',
-    top: -25,
-    right: '41%',
-    alignItems: 'center',
   },
 });

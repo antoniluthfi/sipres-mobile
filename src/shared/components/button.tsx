@@ -3,27 +3,38 @@ import {COLORS} from '../utils/colors';
 import {FONTS} from '../utils/fonts';
 import {
   ActivityIndicator,
+  StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
 
 type ButtonProps = {
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
   title: string;
   onPress?: () => void;
   isLoading?: boolean;
+  disabled?: boolean;
 };
 
-const Button = ({title, containerStyle, onPress, isLoading}: ButtonProps) => {
+const Button = ({
+  title,
+  containerStyle,
+  titleStyle,
+  onPress,
+  isLoading,
+  disabled,
+}: ButtonProps) => {
   return (
     <TouchableOpacity
       style={[styles.button, containerStyle]}
       onPress={onPress}
-      disabled={isLoading}>
+      disabled={isLoading || disabled}>
       {isLoading && <ActivityIndicator size="small" color="white" />}
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, titleStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

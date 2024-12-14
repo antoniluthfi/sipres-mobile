@@ -2,6 +2,7 @@ import BottomTab from '../bottom-tab';
 import LoginScreen from '../../../pages/login';
 import PermissionScreen from '../../../pages/permission';
 import React from 'react';
+import ScanScreen from '../../../pages/scan';
 import SplashScreen from '../../../pages/splash';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SCREEN_OPTIONS} from '../../utils/screen-options';
@@ -29,6 +30,11 @@ const RootStack = () => {
       <Stack.Screen
         name="Permission"
         component={PermissionScreen}
+        options={SCREEN_OPTIONS.DEFAULT}
+      />
+      <Stack.Screen
+        name="ScanQr"
+        component={ScanScreen}
         options={SCREEN_OPTIONS.DEFAULT}
       />
     </Stack.Navigator>
