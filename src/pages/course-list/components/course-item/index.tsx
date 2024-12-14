@@ -1,11 +1,11 @@
 import Button from '../../../../shared/components/button';
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
+import {addMinutes, format, isAfter, isBefore} from 'date-fns';
 import {COLORS} from '../../../../shared/utils/colors';
 import {FONTS} from '../../../../shared/utils/fonts';
-import {addMinutes, format, isAfter, isBefore} from 'date-fns';
 import {id} from 'date-fns/locale';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {MapPin} from 'lucide-react-native';
+import {Info, MapPin} from 'lucide-react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {UserCourseData} from '../../../../shared/api/useUserCoursesList';
 
@@ -46,6 +46,14 @@ const CourseItem = ({item}: CourseItemProps) => {
     return isBefore(now, startDateTime) || isAfter(now, endDateTime);
   };
 
+  const hasTakenAttendance = useMemo(() => {
+    const res = item?.attendance_recap?.find(
+      attendance =>
+        attendance?.meeting_number === item?.upcoming_schedule?.meeting_number,
+    );
+    return !!res?.attendance_record;
+  }, [item]);
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardHeader}>
@@ -64,36 +72,46 @@ const CourseItem = ({item}: CourseItemProps) => {
           </Text>
         </View>
       </View>
-      <View style={styles.cardActions}>
-        <Button
-          title="Hadir"
-          disabled={isQrCodeDisabled(
-            item?.upcoming_schedule?.date,
-            item?.upcoming_schedule?.start_time,
-            item?.upcoming_schedule?.end_time,
-          )}
-          containerStyle={styles.button}
-          titleStyle={styles.buttonText}
-          onPress={() =>
-            navigation.navigate('ScanQr', {
-              courseId: item?.upcoming_schedule?.id,
-              courseMeetingId: item?.id,
-            })
-          }
-        />
-        <View style={styles.actionButtons}>
-          <Button
-            title="Izin"
-            containerStyle={[styles.button, styles.redButton]}
-            titleStyle={styles.buttonText}
-          />
-          <Button
-            title="Sakit"
-            containerStyle={[styles.button, styles.redButton]}
-            titleStyle={styles.buttonText}
-          />
+
+      {hasTakenAttendance ? (
+        <View style={styles.attendanceAlert}>
+          <Info size={12} />
+          <Text style={styles.attendanceAlertTitle}>
+            Anda telah melakukan absensi
+          </Text>
         </View>
-      </View>
+      ) : (
+        <View style={styles.cardActions}>
+          <Button
+            title="Hadir"
+            disabled={isQrCodeDisabled(
+              item?.upcoming_schedule?.date,
+              item?.upcoming_schedule?.start_time,
+              item?.upcoming_schedule?.end_time,
+            )}
+            containerStyle={styles.button}
+            titleStyle={styles.buttonText}
+            onPress={() =>
+              navigation.navigate('ScanQr', {
+                courseId: item?.course_id,
+                courseMeetingId: item?.upcoming_schedule?.id,
+              })
+            }
+          />
+          <View style={styles.actionButtons}>
+            <Button
+              title="Izin"
+              containerStyle={[styles.button, styles.redButton]}
+              titleStyle={styles.buttonText}
+            />
+            <Button
+              title="Sakit"
+              containerStyle={[styles.button, styles.redButton]}
+              titleStyle={styles.buttonText}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -165,5 +183,21 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     gap: 7,
+  },
+  attendanceAlert: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderColor: COLORS.PRIMARY,
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: '#E7F3FF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  attendanceAlertTitle: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    color: 'black',
+    fontSize: 12,
   },
 });

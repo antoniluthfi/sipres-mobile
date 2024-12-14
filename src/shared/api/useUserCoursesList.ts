@@ -19,6 +19,20 @@ export type UserCourseData = {
     start_time: string;
     end_time: string;
   };
+  attendance_recap: Array<{
+    meeting_number: number;
+    is_past: boolean;
+    attendance_record: {
+      id: number;
+      student_id: number;
+      attendance_time: string;
+      latitude: number;
+      longitude: number;
+      status: 'present' | 'permission' | 'sick' | 'absent';
+      remarks: string;
+      file_path: string;
+    };
+  }>;
 };
 
 export const useUserCoursesList = ({

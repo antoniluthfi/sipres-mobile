@@ -25,6 +25,7 @@ const CourseListScreen = () => {
     limit: 10,
     user_id: userData?.id,
     include_upcoming_schedule: 1,
+    include_attendance_recap: 1,
   });
 
   const [isRefreshing, setIsRefreshing] = useState(false);

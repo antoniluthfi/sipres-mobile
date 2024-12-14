@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import Button from '../../shared/components/button';
 import Input from '../../shared/components/Input';
 import React, {useEffect, useState} from 'react';
@@ -29,6 +30,7 @@ const LoginScreen = () => {
       const response = await api.post('/auth/login', {
         email: inputValue.email,
         password: inputValue.password,
+        scope: 'app',
       });
 
       if (response.data?.message === 'Berhasil masuk') {
