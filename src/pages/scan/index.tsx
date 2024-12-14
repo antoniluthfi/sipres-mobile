@@ -160,8 +160,10 @@ const ScanScreen = () => {
       {/* Loading Indicator */}
       {isLoading && (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color={COLORS.PRIMARY} />
-          <Text style={styles.loadingText}>Memproses...</Text>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+            <Text style={styles.loadingText}>Memproses...</Text>
+          </View>
         </View>
       )}
     </View>
@@ -231,6 +233,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingContainer: {
+    backgroundColor: COLORS.WHITE,
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   loadingText: {
     marginTop: 10,

@@ -1,3 +1,4 @@
+import AttendanceHistoryScreen from '../../../pages/attendance-history';
 import CourseListScreen from '../../../pages/course-list';
 import CustomBottomTab from './CustomBottomTab';
 import HomeScreen from '../../../pages/home';
@@ -24,6 +25,14 @@ const BottomTab = () => {
         options={{
           headerShown: false,
           tabBarLabel: 'Jadwal Kuliah',
+        }}
+      />
+      <Tab.Screen
+        name="AttendanceHistory"
+        component={AttendanceHistoryScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Riwayat',
         }}
       />
       <Tab.Screen

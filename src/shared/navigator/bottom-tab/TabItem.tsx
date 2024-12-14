@@ -1,5 +1,5 @@
 import React from 'react';
-import {CalendarClock, Home, User} from 'lucide-react-native';
+import {CalendarCheck, CalendarClock, Home, User} from 'lucide-react-native';
 import {COLORS} from '../../utils/colors';
 import {FONTS} from '../../utils/fonts';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
@@ -25,6 +25,12 @@ const TabItem: React.FC<TabItemProps> = ({
     if (title === 'Jadwal Kuliah') {
       return (
         <CalendarClock color={active ? COLORS.PRIMARY : COLORS.SECONDARY} />
+      );
+    }
+
+    if (title === 'Riwayat') {
+      return (
+        <CalendarCheck color={active ? COLORS.PRIMARY : COLORS.SECONDARY} />
       );
     }
 
