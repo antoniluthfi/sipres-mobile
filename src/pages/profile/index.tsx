@@ -8,8 +8,8 @@ import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {DummyProfile} from '../../assets/images';
 import {useAuth} from '../../shared/context/AuthContext';
 import {useShallow} from 'zustand/shallow';
-import { useFocusEffect } from '@react-navigation/native';
-import { setStatusBarStyle } from '../../shared/utils/functions';
+import {useFocusEffect} from '@react-navigation/native';
+import {setStatusBarStyle} from '../../shared/utils/functions';
 
 const ProfileScreen = () => {
   const api = useAxios();
@@ -25,16 +25,13 @@ const ProfileScreen = () => {
   const handleLogout = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get('/auth/logout');
-
-      if (response.data?.message === 'Berhasil logout') {
-        logout();
-      }
+      await api.get('/auth/logout');
     } catch (error: any) {
       console.log(error);
       Alert.alert('Warning', error?.error);
     } finally {
       setIsLoading(false);
+      logout();
     }
   };
 

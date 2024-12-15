@@ -30,11 +30,26 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, containerStyle]}
+      style={[
+        styles.button,
+        {
+          backgroundColor: disabled ? COLORS.DISABLE : COLORS.PRIMARY,
+        },
+        containerStyle,
+      ]}
       onPress={onPress}
       disabled={isLoading || disabled}>
       {isLoading && <ActivityIndicator size="small" color="white" />}
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      <Text
+        style={[
+          styles.title,
+          {
+            color: disabled ? COLORS.BLACK : COLORS.WHITE,
+          },
+          titleStyle,
+        ]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -44,7 +59,6 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     width: '100%',
-    backgroundColor: COLORS.PRIMARY,
     padding: 10,
     alignItems: 'center',
     borderRadius: 5,
@@ -54,7 +68,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: 'white',
     fontFamily: FONTS.POPPINS_REGULAR,
   },
 });

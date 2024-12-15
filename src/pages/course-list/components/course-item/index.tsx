@@ -11,13 +11,19 @@ import {UserCourseData} from '../../../../shared/api/useUserCoursesList';
 
 type CourseItemProps = {
   item: UserCourseData;
+  onPressPermission: (data: UserCourseData) => void;
+  onPressSick: (data: UserCourseData) => void;
 };
 
 type NavigationProps = NavigationProp<RootStackParamList, 'ScanQr'>;
 
 const PLACEHOLDER_IMAGE = 'https://dummyimage.com/400x200/8c8c8c/000000';
 
-const CourseItem = ({item}: CourseItemProps) => {
+const CourseItem = ({
+  item,
+  onPressPermission,
+  onPressSick,
+}: CourseItemProps) => {
   const navigation = useNavigation<NavigationProps>();
 
   const date = new Date(item?.upcoming_schedule?.date || '');
@@ -49,8 +55,10 @@ const CourseItem = ({item}: CourseItemProps) => {
   const hasTakenAttendance = useMemo(() => {
     const res = item?.attendance_recap?.find(
       attendance =>
-        attendance?.meeting_number === item?.upcoming_schedule?.meeting_number,
+        Number(attendance?.meeting_number) ===
+        Number(item?.upcoming_schedule?.meeting_number),
     );
+
     return !!res?.attendance_record;
   }, [item]);
 
@@ -103,11 +111,13 @@ const CourseItem = ({item}: CourseItemProps) => {
               title="Izin"
               containerStyle={[styles.button, styles.redButton]}
               titleStyle={styles.buttonText}
+              onPress={() => onPressPermission(item)}
             />
             <Button
               title="Sakit"
               containerStyle={[styles.button, styles.redButton]}
               titleStyle={styles.buttonText}
+              onPress={() => onPressSick(item)}
             />
           </View>
         </View>

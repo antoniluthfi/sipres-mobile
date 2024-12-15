@@ -1,7 +1,10 @@
 import CourseItem from './components/course-item';
 import Input from '../../shared/components/Input';
-import React, {useCallback, useState} from 'react';
+import PermissionModal from './components/permission-modal';
+import React, {useCallback, useRef, useState} from 'react';
+import SickModal from './components/sick-modal';
 import useAuthStore from '../../shared/data-store/useAuthStore';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {COLORS} from '../../shared/utils/colors';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Search} from 'lucide-react-native';
@@ -28,7 +31,10 @@ const CourseListScreen = () => {
     include_attendance_recap: 1,
   });
 
+  const permissionModalRef = useRef<BottomSheetModal>(null);
+  const sickModalRef = useRef<BottomSheetModal>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [courseData, setCourseData] = useState<UserCourseData>();
 
   useFocusEffect(
     useCallback(() => {
@@ -38,6 +44,14 @@ const CourseListScreen = () => {
       });
     }, []),
   );
+
+  const handlePresentPermissionModalPress = useCallback(() => {
+    permissionModalRef.current?.present();
+  }, []);
+
+  const handlePresentSickModalPress = useCallback(() => {
+    sickModalRef.current?.present();
+  }, []);
 
   // Fungsi untuk handle refresh
   const handleRefresh = async () => {
@@ -52,7 +66,19 @@ const CourseListScreen = () => {
   };
 
   const renderItem = ({item}: {item: UserCourseData}) => {
-    return <CourseItem item={item} />;
+    return (
+      <CourseItem
+        item={item}
+        onPressPermission={data => {
+          setCourseData(data);
+          handlePresentPermissionModalPress();
+        }}
+        onPressSick={data => {
+          setCourseData(data);
+          handlePresentSickModalPress();
+        }}
+      />
+    );
   };
 
   return (
@@ -69,6 +95,8 @@ const CourseListScreen = () => {
         refreshing={isRefreshing}
         onRefresh={handleRefresh}
       />
+      <PermissionModal ref={permissionModalRef} data={courseData} />
+      <SickModal ref={sickModalRef} data={courseData} />
     </View>
   );
 };
