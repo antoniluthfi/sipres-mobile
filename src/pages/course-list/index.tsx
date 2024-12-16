@@ -6,7 +6,7 @@ import SickModal from './components/sick-modal';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {COLORS} from '../../shared/utils/colors';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect} from '@react-navigation/native';
@@ -23,7 +23,7 @@ const CourseListScreen = () => {
     })),
   );
 
-  const {data, refetch} = useUserCoursesList({
+  const {data, refetch, isLoading} = useUserCoursesList({
     page: 1,
     limit: 10,
     user_id: userData?.id,
@@ -86,15 +86,21 @@ const CourseListScreen = () => {
       <View style={styles.searchContainer}>
         <Input placeholder="Cari mata kuliah" rightIcon={<Search />} />
       </View>
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, i) => `course_${i}`}
-        refreshing={isRefreshing}
-        onRefresh={handleRefresh}
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+        </View>
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(_, i) => `course_${i}`}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      )}
       <PermissionModal ref={permissionModalRef} data={courseData} />
       <SickModal ref={sickModalRef} data={courseData} />
     </View>
@@ -115,6 +121,12 @@ const styles = StyleSheet.create({
   listContent: {
     gap: 10,
     paddingBottom: 100,
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
 });
 

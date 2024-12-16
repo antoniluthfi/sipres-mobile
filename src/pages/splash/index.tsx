@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
+import useAuthStore from '../../shared/data-store/useAuthStore';
 import {COLORS} from '../../shared/utils/colors';
 import {FONTS} from '../../shared/utils/fonts';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Logo} from '../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
+import {useShallow} from 'zustand/shallow';
 import {
   requestCustomPermissions,
   setStatusBarStyle,
@@ -11,6 +13,11 @@ import {
 
 const SplashScreen = () => {
   const navigation = useNavigation<any>();
+  const {userData} = useAuthStore(
+    useShallow((state: any) => ({
+      userData: state.userData,
+    })),
+  );
 
   useEffect(() => {
     setStatusBarStyle({
@@ -21,13 +28,17 @@ const SplashScreen = () => {
     setTimeout(() => {
       requestCustomPermissions({
         onSuccess: () => {
-          navigation.replace('Login');
+          if (userData?.id) {
+            navigation.replace('MainTab');
+          } else {
+            navigation.replace('Login');
+          }
         },
         onFailed: () => {
           navigation.replace('Permission');
         },
       });
-    }, 1000);
+    }, 3000);
   }, []);
 
   return (

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.WHITE,
     borderWidth: 1,
     borderRadius: 7,
-    borderColor: COLORS.DISABLE,
+    borderColor: COLORS.GRAY,
     elevation: 4,
     padding: 10,
     shadowColor: 'rgba(0, 0, 0, 0.25)',

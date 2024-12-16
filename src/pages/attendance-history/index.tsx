@@ -7,7 +7,7 @@ import {
   useAttendanceRecordList,
 } from '../../shared/api/useAttendanceRecordList';
 import {COLORS} from '../../shared/utils/colors';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect} from '@react-navigation/native';
@@ -22,7 +22,7 @@ const AttendanceHistoryScreen = () => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const {data, refetch} = useAttendanceRecordList({
+  const {data, refetch, isLoading} = useAttendanceRecordList({
     page: 1,
     limit: 10,
     user_id: userData?.id,
@@ -58,15 +58,21 @@ const AttendanceHistoryScreen = () => {
       <View style={styles.searchContainer}>
         <Input placeholder="Cari data" rightIcon={<Search />} />
       </View>
-      <FlatList
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, i) => `course_${i}`}
-        refreshing={isRefreshing}
-        onRefresh={handleRefresh}
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+        </View>
+      ) : (
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(_, i) => `course_${i}`}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+        />
+      )}
     </View>
   );
 };
@@ -87,5 +93,11 @@ const styles = StyleSheet.create({
   listContent: {
     gap: 10,
     paddingBottom: 100,
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
 });

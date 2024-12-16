@@ -1,7 +1,8 @@
-import Carousel from './components/Carousel';
-import React, {memo, useCallback} from 'react';
+import AnnouncementList from './components/announcement-list';
+import Carousel from './components/carousel';
+import Menu from './components/menu';
+import React, {useCallback} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
-import useMenu, {Menu} from './hooks/useMenu';
 import {COLORS} from '../../shared/utils/colors';
 import {DummyProfile} from '../../assets/images';
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
@@ -9,6 +10,7 @@ import {FONTS} from '../../shared/utils/fonts';
 import {Logo} from '../../assets/icons';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect} from '@react-navigation/native';
+import {useLatestAnnouncementList} from '../../shared/api/useLatestAnnouncementList';
 
 // Header Component
 const Header = () => (
@@ -31,21 +33,11 @@ const ProfileInfo = ({userData}: {userData: any}) => (
   </View>
 );
 
-// Optimized Carousel
-const OptimizedCarousel = memo(Carousel);
-
-// MenuItem Component
-const MenuItem = memo(({menu}: {menu: Menu}) => (
-  <View style={styles.menuItem}>
-    <View style={styles.menuIconContainer}>{menu.icon}</View>
-    <Text style={styles.menuText}>{menu.name}</Text>
-  </View>
-));
-
 // HomeScreen Component
 const HomeScreen = () => {
   const userData = useAuthStore(state => state.userData);
-  const MENU = useMenu();
+
+  const {data, isLoading} = useLatestAnnouncementList({page: 1});
 
   useFocusEffect(
     useCallback(() => {
@@ -56,22 +48,29 @@ const HomeScreen = () => {
     }, []),
   );
 
+  const renderItem = () => {
+    return (
+      <>
+        <View style={styles.carouselContainer}>
+          <Carousel data={data} isLoading={isLoading} />
+        </View>
+
+        <Menu />
+        <AnnouncementList data={data} isLoading={isLoading} />
+      </>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
         <ProfileInfo userData={userData} />
-        <View style={styles.carouselContainer}>
-          <OptimizedCarousel />
-        </View>
-        <Text style={styles.menuHeaderText}>Menu</Text>
+
         <FlatList
-          data={MENU}
-          renderItem={({item}) => <MenuItem menu={item} />}
-          keyExtractor={(item, index) => `menu_${index}`}
-          numColumns={4}
-          columnWrapperStyle={styles.menuColumnWrapper}
-          showsVerticalScrollIndicator={false}
+          data={[1]}
+          renderItem={renderItem}
+          keyExtractor={(_, i) => `home_${i}`}
         />
       </View>
     </View>
@@ -130,34 +129,6 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
     marginBottom: 150,
-  },
-  menuHeaderText: {
-    fontFamily: FONTS.POPPINS_BOLD,
-    fontSize: 16,
-    color: 'black',
-    marginBottom: 10,
-  },
-  menuColumnWrapper: {
-    gap: 20,
-  },
-  menuItem: {
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  menuIconContainer: {
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 100,
-    borderColor: COLORS.PRIMARY,
-  },
-  menuText: {
-    fontFamily: FONTS.POPPINS_MEDIUM,
-    fontSize: 10,
-    color: COLORS.PRIMARY,
-    textAlign: 'center',
   },
 });
 

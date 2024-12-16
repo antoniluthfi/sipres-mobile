@@ -18,6 +18,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   const {
     isLogin,
     setIsLogin,
+    userData,
     setUserData,
     isRefreshTokenValid,
     setRefreshTokenValid,
@@ -25,6 +26,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     useShallow((state: any) => ({
       isLogin: state.isLogin,
       setIsLogin: state.setIsLogin,
+      userData: state.userData,
       setUserData: state.setUserData,
       isRefreshTokenValid: state.isRefreshTokenValid,
       setRefreshTokenValid: state.setRefreshTokenValid,
@@ -53,7 +55,10 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       setUserData(response.data?.data || null);
     } catch (error: any) {
       console.log('error getAuthenticatedUser: ', error);
-      Alert.alert('Warning', error?.error);
+      if (userData?.id) {
+        Alert.alert('Warning', error?.error);
+        logout();
+      }
     }
   };
 

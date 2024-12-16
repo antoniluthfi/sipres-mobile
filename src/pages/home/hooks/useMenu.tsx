@@ -1,4 +1,4 @@
-import {Calendar} from 'lucide-react-native';
+import {Building, Calendar, MessageCircleQuestion, UsersIcon} from 'lucide-react-native';
 import {COLORS} from '../../../shared/utils/colors';
 
 export type Menu = {
@@ -13,28 +13,16 @@ const useMenu = () => {
       icon: <Calendar color={COLORS.PRIMARY} />,
     },
     {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
+      name: 'Denah Kelas',
+      icon: <Building color={COLORS.PRIMARY} />,
     },
     {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
+      name: 'Bantuan',
+      icon: <MessageCircleQuestion color={COLORS.PRIMARY} />,
     },
     {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
-    },
-    {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
-    },
-    {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
-    },
-    {
-      name: 'Jadwal Kuliah',
-      icon: <Calendar color={COLORS.PRIMARY} />,
+      name: 'Tentang Kami',
+      icon: <UsersIcon color={COLORS.PRIMARY} />,
     },
   ];
 

@@ -19,8 +19,8 @@ const LoginScreen = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
-    email: 'antoni@gmail.com',
-    password: '12345678',
+    email: __DEV__ ? 'antoni@gmail.com' : '',
+    password: __DEV__ ? '12345678' : '',
   });
 
   const handleLogin = async () => {
