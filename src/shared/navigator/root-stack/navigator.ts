@@ -6,5 +6,6 @@ type RootStackParamList = {
   ScanQr: {
     courseId: number;
     courseMeetingId: number;
-  }
+  };
+  ContactUs: undefined;
 }
