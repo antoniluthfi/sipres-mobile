@@ -1,15 +1,15 @@
 import React, {memo} from 'react';
 import useMenu, {Menu as MenuType} from '../../hooks/useMenu';
 import {COLORS} from '../../../../shared/utils/colors';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FONTS} from '../../../../shared/utils/fonts';
 
 // MenuItem Component
 const MenuItem = memo(({menu}: {menu: MenuType}) => (
-  <View style={styles.menuItem}>
+  <TouchableOpacity style={styles.menuItem} onPress={menu?.onPress}>
     <View style={styles.menuIconContainer}>{menu.icon}</View>
     <Text style={styles.menuText}>{menu.name}</Text>
-  </View>
+  </TouchableOpacity>
 ));
 
 const Menu = () => {

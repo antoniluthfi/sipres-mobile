@@ -51,7 +51,11 @@ const HomeScreen = () => {
   const renderItem = () => {
     return (
       <>
-        <View style={styles.carouselContainer}>
+        <View
+          style={[
+            styles.carouselContainer,
+            {marginBottom: isLoading ? 0 : 150},
+          ]}>
           <Carousel data={data} isLoading={isLoading} />
         </View>
 
@@ -128,7 +132,6 @@ const styles = StyleSheet.create({
   carouselContainer: {
     width: '100%',
     position: 'relative',
-    marginBottom: 150,
   },
 });
 
