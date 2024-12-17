@@ -1,4 +1,5 @@
 import BottomTab from '../bottom-tab';
+import ClassFloorPlanScreen from '../../../pages/class-floor-plan';
 import ContactUsScreen from '../../../pages/contact-us';
 import LoginScreen from '../../../pages/login';
 import PermissionScreen from '../../../pages/permission';
@@ -43,7 +44,17 @@ const RootStack = () => {
         name="ContactUs"
         component={ContactUsScreen}
         options={{
-          ...SCREEN_OPTIONS.DEFAULT,
+          ...SCREEN_OPTIONS.SLIDE_LEFT,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ClassFloorPlan"
+        component={ClassFloorPlanScreen}
+        options={{
+          ...SCREEN_OPTIONS.SLIDE_LEFT,
           headerStyle: {
             backgroundColor: COLORS.PRIMARY,
           },

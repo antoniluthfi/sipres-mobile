@@ -8,4 +8,5 @@ type RootStackParamList = {
     courseMeetingId: number;
   };
   ContactUs: undefined;
+  ClassFloorPlan: undefined;
 }

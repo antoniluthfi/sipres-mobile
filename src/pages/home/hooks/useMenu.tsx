@@ -21,6 +21,9 @@ const useMenu = () => {
     {
       name: 'Denah Kelas',
       icon: <Building color={COLORS.PRIMARY} />,
+      onPress: () => {
+        navigation.navigate('ClassFloorPlan');
+      },
     },
     {
       name: 'Kontak Kami',

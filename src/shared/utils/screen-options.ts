@@ -5,4 +5,8 @@ export const SCREEN_OPTIONS = {
     headerShown: false,
     ...TransitionPresets.ModalSlideFromBottomIOS,
   },
+  SLIDE_LEFT: {
+    headerShown: false,
+    ...TransitionPresets.SlideFromRightIOS,
+  },
 };
