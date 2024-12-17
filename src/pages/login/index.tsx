@@ -39,7 +39,10 @@ const LoginScreen = () => {
       }
     } catch (error: any) {
       console.log('error login: ', error);
-      Alert.alert('Warning', error?.error);
+      Alert.alert(
+        'Warning',
+        error?.error || error?.message || error?.errors?.[0]?.msg,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +68,7 @@ const LoginScreen = () => {
 
       <Input
         label="Password"
-        value={inputValue.email}
+        value={inputValue.password}
         onChange={val => setInputValue(prev => ({...prev, email: val}))}
         placeholder="Masukkan Password"
         rightIcon={<Eye color={COLORS.SECONDARY} />}

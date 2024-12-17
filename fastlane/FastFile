@@ -1,0 +1,51 @@
+fastlane_require 'dotenv'
+fastlane_require 'json'
+
+before_all do
+  Dotenv.overload('.env')
+end
+
+platform :android do
+  desc 'Increment versionCode and update versionName manually'
+  private_lane :inc_ver_and do
+    gradle_file = "../android/app/build.gradle"
+    package_json = JSON.parse(File.read("../package.json"))
+    version_name = package_json["version"]
+
+    # Baca isi file build.gradle
+    gradle_content = File.read(gradle_file)
+
+    # Increment versionCode
+    version_code = gradle_content.match(/versionCode (\d+)/)[1].to_i + 1
+    gradle_content.gsub!(/versionCode \d+/, "versionCode #{version_code}")
+
+    # Update versionName
+    gradle_content.gsub!(/versionName ".*?"/, "versionName \"#{version_name}\"")
+
+    # Tulis kembali ke file build.gradle
+    File.write(gradle_file, gradle_content)
+
+    UI.message("Updated versionCode to #{version_code} and versionName to #{version_name}")
+  end
+
+  desc "Release android app beta version"
+  lane :distribute do
+    # Panggil private lane inc_ver_and
+    inc_ver_and
+
+    gradle(task: 'clean assembleRelease', project_dir: './android', print_command: false, properties: {
+      "MYAPP_UPLOAD_STORE_FILE" => ENV["MYAPP_UPLOAD_STORE_FILE"],
+      "MYAPP_UPLOAD_STORE_PASSWORD" => ENV["MYAPP_UPLOAD_STORE_PASSWORD"],
+      "MYAPP_UPLOAD_KEY_ALIAS" => ENV["MYAPP_UPLOAD_KEY_ALIAS"],
+      "MYAPP_UPLOAD_KEY_PASSWORD" => ENV["MYAPP_UPLOAD_KEY_PASSWORD"]
+    })
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      groups: "tester",
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+      release_notes: "Release new feature",
+      debug: true
+    )
+  end
+end
