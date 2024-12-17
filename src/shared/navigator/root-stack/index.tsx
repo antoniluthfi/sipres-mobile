@@ -9,6 +9,7 @@ import SplashScreen from '../../../pages/splash';
 import {COLORS} from '../../utils/colors';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SCREEN_OPTIONS} from '../../utils/screen-options';
+import TermsConditionScreen from '../../../pages/terms-condition';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -53,6 +54,16 @@ const RootStack = () => {
       <Stack.Screen
         name="ClassFloorPlan"
         component={ClassFloorPlanScreen}
+        options={{
+          ...SCREEN_OPTIONS.SLIDE_LEFT,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="TermsCondition"
+        component={TermsConditionScreen}
         options={{
           ...SCREEN_OPTIONS.SLIDE_LEFT,
           headerStyle: {

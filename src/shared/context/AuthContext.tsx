@@ -57,8 +57,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       console.log('error getAuthenticatedUser: ', error);
       if (userData?.id) {
         Alert.alert('Warning', error?.error);
-        logout();
       }
+      logout();
     }
   };
 

@@ -35,6 +35,9 @@ const useMenu = () => {
     {
       name: 'Syarat &\nKetentuan',
       icon: <MessageCircleQuestion color={COLORS.PRIMARY} />,
+      onPress: () => {
+        navigation.navigate('TermsCondition');
+      },
     },
     {
       name: 'Tentang Kami',

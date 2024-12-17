@@ -9,4 +9,5 @@ type RootStackParamList = {
   };
   ContactUs: undefined;
   ClassFloorPlan: undefined;
+  TermsCondition: undefined;
 }
