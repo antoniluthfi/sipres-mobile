@@ -1,5 +1,7 @@
 import AnnouncementList from './components/announcement-list';
 import Carousel from './components/carousel';
+import Config from '../../shared/config/env.json';
+import FastImage from 'react-native-fast-image';
 import Menu from './components/menu';
 import React, {useCallback} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
@@ -23,7 +25,19 @@ const Header = () => (
 // ProfileInfo Component
 const ProfileInfo = ({userData}: {userData: any}) => (
   <View style={styles.profileContainer}>
-    <Image source={DummyProfile} style={styles.profileImage} />
+    <FastImage
+      source={
+        userData?.profile_url
+          ? {
+              uri: Config.BE_URL + userData?.profile_url,
+              priority: FastImage.priority.high,
+              cache: 'immutable',
+            }
+          : DummyProfile
+      }
+      style={styles.profileImage}
+      resizeMode={FastImage.resizeMode.cover}
+    />
     <View>
       <Text style={styles.greetingText}>Halo, {userData?.name}</Text>
       <Text style={styles.welcomeText}>

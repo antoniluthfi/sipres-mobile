@@ -4,9 +4,10 @@ import PermissionModal from './components/permission-modal';
 import React, {useCallback, useRef, useState} from 'react';
 import SickModal from './components/sick-modal';
 import useAuthStore from '../../shared/data-store/useAuthStore';
+import useDebounce from '../../shared/hooks/useDebounce';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {COLORS} from '../../shared/utils/colors';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect} from '@react-navigation/native';
@@ -23,18 +24,21 @@ const CourseListScreen = () => {
     })),
   );
 
-  const {data, refetch, isLoading} = useUserCoursesList({
-    page: 1,
-    limit: 10,
-    user_id: userData?.id,
-    include_upcoming_schedule: 1,
-    include_attendance_recap: 1,
-  });
-
   const permissionModalRef = useRef<BottomSheetModal>(null);
   const sickModalRef = useRef<BottomSheetModal>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [courseData, setCourseData] = useState<UserCourseData>();
+  const [keyword, setKeyword] = useState('');
+
+  const debounceSearch = useDebounce(keyword, 500);
+  const {data, refetch, isLoading} = useUserCoursesList({
+    page: 1,
+    limit: 10,
+    search: debounceSearch,
+    user_id: userData?.id,
+    include_upcoming_schedule: 1,
+    include_attendance_recap: 1,
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -84,7 +88,12 @@ const CourseListScreen = () => {
   return (
     <View style={styles.screen}>
       <View style={styles.searchContainer}>
-        <Input placeholder="Cari mata kuliah" rightIcon={<Search />} />
+        <Input
+          placeholder="Cari mata kuliah"
+          rightIcon={<Search />}
+          value={keyword}
+          onChange={setKeyword}
+        />
       </View>
       {isLoading ? (
         <View style={styles.loadingContainer}>

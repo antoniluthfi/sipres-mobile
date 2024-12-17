@@ -2,16 +2,17 @@ import Input from '../../shared/components/Input';
 import React, {useCallback, useState} from 'react';
 import RecordItem from './components/record-item';
 import useAuthStore from '../../shared/data-store/useAuthStore';
-import {
-  AttendanceRecord,
-  useAttendanceRecordList,
-} from '../../shared/api/useAttendanceRecordList';
-import {COLORS} from '../../shared/utils/colors';
+import useDebounce from '../../shared/hooks/useDebounce';
 import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
+import {COLORS} from '../../shared/utils/colors';
 import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
+import {
+  AttendanceRecord,
+  useAttendanceRecordList,
+} from '../../shared/api/useAttendanceRecordList';
 
 const AttendanceHistoryScreen = () => {
   const {userData} = useAuthStore(
@@ -21,10 +22,13 @@ const AttendanceHistoryScreen = () => {
   );
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [keyword, setKeyword] = useState('');
 
+  const debounceSearch = useDebounce(keyword, 500);
   const {data, refetch, isLoading} = useAttendanceRecordList({
     page: 1,
     limit: 10,
+    search: debounceSearch,
     user_id: userData?.id,
   });
 
@@ -56,7 +60,12 @@ const AttendanceHistoryScreen = () => {
   return (
     <View style={styles.screen}>
       <View style={styles.searchContainer}>
-        <Input placeholder="Cari data" rightIcon={<Search />} />
+        <Input
+          placeholder="Cari data"
+          rightIcon={<Search />}
+          value={keyword}
+          onChange={setKeyword}
+        />
       </View>
       {isLoading ? (
         <View style={styles.loadingContainer}>

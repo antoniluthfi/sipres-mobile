@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import axios from 'axios';
 import Config from '../config/env.json';
 import useAuthStore from '../data-store/useAuthStore';
 

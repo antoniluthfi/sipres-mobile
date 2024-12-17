@@ -1,4 +1,5 @@
 import Button from '../../shared/components/button';
+import Config from '../../shared/config/env.json';
 import Input from '../../shared/components/Input';
 import React, {useCallback, useState} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
@@ -6,10 +7,11 @@ import useAxios from '../../shared/hooks/useAxios';
 import {Alert, Image, StyleSheet, View} from 'react-native';
 import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {DummyProfile} from '../../assets/images';
-import {useAuth} from '../../shared/context/AuthContext';
-import {useShallow} from 'zustand/shallow';
-import {useFocusEffect} from '@react-navigation/native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
+import {useAuth} from '../../shared/context/AuthContext';
+import {useFocusEffect} from '@react-navigation/native';
+import {useShallow} from 'zustand/shallow';
+import FastImage from 'react-native-fast-image';
 
 const ProfileScreen = () => {
   const api = useAxios();
@@ -46,16 +48,18 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image
+      <FastImage
         source={
-          userData?.proile_url
+          userData?.profile_url
             ? {
-                uri: userData?.proile_url,
+                uri: Config.BE_URL + userData?.profile_url,
+                priority: FastImage.priority.high,
+                cache: 'immutable',
               }
             : DummyProfile
         }
         style={styles.profileImage}
-        resizeMode="contain"
+        resizeMode={FastImage.resizeMode.cover}
       />
 
       <View style={styles.inputContainer}>
