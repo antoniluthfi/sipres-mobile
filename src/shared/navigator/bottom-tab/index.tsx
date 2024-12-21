@@ -4,6 +4,7 @@ import CustomBottomTab from './CustomBottomTab';
 import HomeScreen from '../../../pages/home';
 import ProfileScreen from '../../../pages/profile';
 import React from 'react';
+import {COLORS} from '../../utils/colors';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,9 @@ const BottomTab = () => {
         options={{
           headerShown: false,
           tabBarLabel: 'Jadwal Kuliah',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
         }}
       />
       <Tab.Screen
@@ -33,6 +37,9 @@ const BottomTab = () => {
         options={{
           headerShown: false,
           tabBarLabel: 'Riwayat',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
         }}
       />
       <Tab.Screen

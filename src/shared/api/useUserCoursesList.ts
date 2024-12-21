@@ -40,6 +40,7 @@ export const useUserCoursesList = ({
   limit = 5,
   search = '',
   user_id = '',
+  course_id = '',
   include_attendance_recap = 0,
   include_upcoming_schedule = 0,
 }) => {
@@ -56,7 +57,7 @@ export const useUserCoursesList = ({
   };
 
   // URL API dengan parameter
-  const apiUrl = `/user-course?page=${page}&limit=${limit}&user_id=${user_id}&include_attendance_recap=${include_attendance_recap}&include_upcoming_schedule=${include_upcoming_schedule}&search=${search}`;
+  const apiUrl = `/user-course?page=${page}&limit=${limit}&user_id=${user_id}&course_id=${course_id}&include_attendance_recap=${include_attendance_recap}&include_upcoming_schedule=${include_upcoming_schedule}&search=${search}`;
 
   // Memanfaatkan useSWR untuk fetching data
   const {data, error, isLoading, mutate} = useSWR(apiUrl, fetcher, {

@@ -35,6 +35,7 @@ export const useAttendanceRecordList = ({
   limit = 5,
   search = '',
   user_id = '',
+  course_id = '',
 }) => {
   const axiosInstance = useAxios();
 
@@ -48,7 +49,7 @@ export const useAttendanceRecordList = ({
     }
   };
 
-  const urlApi = `/attendance/records?page=${page}&limit=${limit}&user_id=${user_id}&search=${search}`;
+  const urlApi = `/attendance/records?page=${page}&limit=${limit}&user_id=${user_id}&course_id=${course_id}&search=${search}`;
 
   const {data, error, isLoading, mutate} = useSWR(urlApi, fetcher, SWR_CONFIG);
 

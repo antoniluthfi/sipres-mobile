@@ -26,8 +26,16 @@ const CourseItem = ({
 }: CourseItemProps) => {
   const navigation = useNavigation<NavigationProps>();
 
-  const date = new Date(item?.upcoming_schedule?.date || '');
-  const formattedDate = format(date, 'eeee, dd MMMM yyyy', {locale: id});
+  const formattedDate = useMemo(() => {
+    if (item?.upcoming_schedule?.date) {
+      const date = new Date(item?.upcoming_schedule?.date || '');
+      const formatted = format(date, 'eeee, dd MMMM yyyy', {locale: id});
+
+      return formatted;
+    }
+
+    return '';
+  }, [item?.upcoming_schedule?.date]);
 
   const startTime = item?.upcoming_schedule?.start_time?.substring(0, 5);
   const endTime = item?.upcoming_schedule?.end_time?.substring(0, 5);
@@ -73,54 +81,64 @@ const CourseItem = ({
             <MapPin size={14} />
             <Text style={styles.locationText}>Kelas A</Text>
           </View>
-          <Text style={styles.scheduleTitle}>Jadwal</Text>
-          <Text style={styles.scheduleText}>{formattedDate}</Text>
-          <Text style={styles.scheduleText}>
-            {startTime} - {endTime} WIB
-          </Text>
+          {formattedDate ? (
+            <>
+              <Text style={styles.scheduleTitle}>Jadwal</Text>
+              <Text style={styles.scheduleText}>{formattedDate}</Text>
+              <Text style={styles.scheduleText}>
+                {startTime} - {endTime} WIB
+              </Text>
+            </>
+          ) : (
+            <Text style={styles.noScheduleText}>Tidak ada jadwal</Text>
+          )}
         </View>
       </View>
 
-      {hasTakenAttendance ? (
-        <View style={styles.attendanceAlert}>
-          <Info size={12} />
-          <Text style={styles.attendanceAlertTitle}>
-            Anda telah melakukan absensi
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.cardActions}>
-          <Button
-            title="Hadir"
-            disabled={isQrCodeDisabled(
-              item?.upcoming_schedule?.date,
-              item?.upcoming_schedule?.start_time,
-              item?.upcoming_schedule?.end_time,
-            )}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonText}
-            onPress={() =>
-              navigation.navigate('ScanQr', {
-                courseId: item?.course_id,
-                courseMeetingId: item?.upcoming_schedule?.id,
-              })
-            }
-          />
-          <View style={styles.actionButtons}>
-            <Button
-              title="Izin"
-              containerStyle={[styles.button, styles.redButton]}
-              titleStyle={styles.buttonText}
-              onPress={() => onPressPermission(item)}
-            />
-            <Button
-              title="Sakit"
-              containerStyle={[styles.button, styles.redButton]}
-              titleStyle={styles.buttonText}
-              onPress={() => onPressSick(item)}
-            />
-          </View>
-        </View>
+      {formattedDate && (
+        <>
+          {hasTakenAttendance ? (
+            <View style={styles.attendanceAlert}>
+              <Info size={12} />
+              <Text style={styles.attendanceAlertTitle}>
+                Anda telah melakukan absensi
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.cardActions}>
+              <Button
+                title="Hadir"
+                disabled={isQrCodeDisabled(
+                  item?.upcoming_schedule?.date,
+                  item?.upcoming_schedule?.start_time,
+                  item?.upcoming_schedule?.end_time,
+                )}
+                containerStyle={styles.button}
+                titleStyle={styles.buttonText}
+                onPress={() =>
+                  navigation.navigate('ScanQr', {
+                    courseId: item?.course_id,
+                    courseMeetingId: item?.upcoming_schedule?.id,
+                  })
+                }
+              />
+              <View style={styles.actionButtons}>
+                <Button
+                  title="Izin"
+                  containerStyle={[styles.button, styles.redButton]}
+                  titleStyle={styles.buttonText}
+                  onPress={() => onPressPermission(item)}
+                />
+                <Button
+                  title="Sakit"
+                  containerStyle={[styles.button, styles.redButton]}
+                  titleStyle={styles.buttonText}
+                  onPress={() => onPressSick(item)}
+                />
+              </View>
+            </View>
+          )}
+        </>
       )}
     </View>
   );
@@ -209,5 +227,10 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.POPPINS_REGULAR,
     color: 'black',
     fontSize: 12,
+  },
+  noScheduleText: {
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: 14,
+    color: COLORS.BLACK,
   },
 });

@@ -1,20 +1,27 @@
-import Input from '../../shared/components/Input';
-import React, {useCallback, useState} from 'react';
+import appBar from '../../shared/components/leading/AppBar';
+import DataNotFound from '../../shared/components/data-not-found';
+import Filter from './components/filter';
+import Leading from '../../shared/components/leading';
+import React, {useCallback, useEffect, useState} from 'react';
 import RecordItem from './components/record-item';
 import useAuthStore from '../../shared/data-store/useAuthStore';
-import useDebounce from '../../shared/hooks/useDebounce';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {COLORS} from '../../shared/utils/colors';
-import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   AttendanceRecord,
   useAttendanceRecordList,
 } from '../../shared/api/useAttendanceRecordList';
 
 const AttendanceHistoryScreen = () => {
+  const navigation = useNavigation();
   const {userData} = useAuthStore(
     useShallow((state: any) => ({
       userData: state.userData,
@@ -22,22 +29,30 @@ const AttendanceHistoryScreen = () => {
   );
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [keyword, setKeyword] = useState('');
+  const [selectedCourseId, setSelectedCourseId] = useState('');
 
-  const debounceSearch = useDebounce(keyword, 500);
   const {data, refetch, isLoading} = useAttendanceRecordList({
     page: 1,
     limit: 10,
-    search: debounceSearch,
     user_id: userData?.id,
+    course_id: selectedCourseId,
   });
+
+  useEffect(() => {
+    navigation.setOptions(
+      appBar({
+        leading: <Leading title="Riwayat Absensi" useBackButton={false} />,
+      }),
+    );
+  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {
       setStatusBarStyle({
-        style: 'dark-content',
-        backgroundColor: 'white',
+        style: 'light-content',
+        backgroundColor: COLORS.PRIMARY,
       });
+      refetch();
     }, []),
   );
 
@@ -59,14 +74,8 @@ const AttendanceHistoryScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.searchContainer}>
-        <Input
-          placeholder="Cari data"
-          rightIcon={<Search />}
-          value={keyword}
-          onChange={setKeyword}
-        />
-      </View>
+      <Filter onSubmit={setSelectedCourseId} />
+
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.PRIMARY} />
@@ -80,6 +89,7 @@ const AttendanceHistoryScreen = () => {
           keyExtractor={(_, i) => `course_${i}`}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
+          ListEmptyComponent={DataNotFound}
         />
       )}
     </View>
@@ -92,9 +102,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: COLORS.WHITE,
-  },
-  searchContainer: {
-    padding: 20,
   },
   list: {
     paddingHorizontal: 20,

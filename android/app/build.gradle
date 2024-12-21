@@ -84,7 +84,7 @@ android {
         applicationId "com.sipresmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 4
         versionName "1.0.0"
     }
     signingConfigs {
@@ -128,6 +128,8 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation project(':react-native-fs')
+    implementation project(':react-native-file-viewer')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

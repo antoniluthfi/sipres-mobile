@@ -77,5 +77,11 @@
 
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) requires location access while in use to offer location-based services such as maps and nearby recommendations.</string>
+
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

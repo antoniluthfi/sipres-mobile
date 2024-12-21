@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 10,
-    color: 'white',
+    color: COLORS.BLACK,
     fontSize: 16,
-    fontFamily: FONTS.POPPINS_BOLD,
+    fontFamily: FONTS.POPPINS_MEDIUM,
   },
 });

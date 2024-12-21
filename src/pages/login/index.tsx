@@ -69,7 +69,7 @@ const LoginScreen = () => {
       <Input
         label="Password"
         value={inputValue.password}
-        onChange={val => setInputValue(prev => ({...prev, email: val}))}
+        onChange={val => setInputValue(prev => ({...prev, password: val}))}
         placeholder="Masukkan Password"
         rightIcon={<Eye color={COLORS.SECONDARY} />}
         secureTextEntry

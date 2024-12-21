@@ -2,18 +2,25 @@ import React from 'react';
 import {ArrowLeft} from 'lucide-react-native';
 import {COLORS} from '../../utils/colors';
 import {FONTS} from '../../utils/fonts';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const Leading = ({title}: {title: string}) => {
+type LeadingProps = {
+  title: string;
+  useBackButton?: boolean;
+};
+
+const Leading = ({title, useBackButton = true}: LeadingProps) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigation.goBack()}>
-      <ArrowLeft size={25} color={COLORS.WHITE} />
+    <View style={styles.container}>
+      {useBackButton && (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowLeft size={25} color={COLORS.WHITE} />
+        </TouchableOpacity>
+      )}
       <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -21,10 +28,10 @@ export default Leading;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    gap: 16, 
-    paddingHorizontal: 20
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    paddingHorizontal: 20,
   },
   imgLeft: {
     height: 20,

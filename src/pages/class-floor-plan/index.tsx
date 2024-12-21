@@ -1,14 +1,15 @@
 import appBar from '../../shared/components/leading/AppBar';
 import ClassItem from './components/class-item';
+import DataNotFound from '../../shared/components/data-not-found';
 import Input from '../../shared/components/Input';
 import Leading from '../../shared/components/leading';
 import React, {useEffect, useState} from 'react';
 import useDebounce from '../../shared/hooks/useDebounce';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {COLORS} from '../../shared/utils/colors';
 import {LocationData, useLocationList} from '../../shared/api/useLocationList';
 import {Search} from 'lucide-react-native';
 import {useNavigation} from '@react-navigation/native';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 
 const ClassFloorPlanScreen = () => {
   const navigation = useNavigation();
@@ -69,6 +70,7 @@ const ClassFloorPlanScreen = () => {
           keyExtractor={(_, i) => `course_${i}`}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
+          ListEmptyComponent={DataNotFound}
         />
       )}
     </View>

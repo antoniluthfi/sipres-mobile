@@ -1,7 +1,10 @@
+import appBar from '../../shared/components/leading/AppBar';
 import CourseItem from './components/course-item';
+import DataNotFound from '../../shared/components/data-not-found';
 import Input from '../../shared/components/Input';
+import Leading from '../../shared/components/leading';
 import PermissionModal from './components/permission-modal';
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import SickModal from './components/sick-modal';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import useDebounce from '../../shared/hooks/useDebounce';
@@ -10,7 +13,7 @@ import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {COLORS} from '../../shared/utils/colors';
 import {Search} from 'lucide-react-native';
 import {setStatusBarStyle} from '../../shared/utils/functions';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
 import {
   UserCourseData,
@@ -18,6 +21,7 @@ import {
 } from '../../shared/api/useUserCoursesList';
 
 const CourseListScreen = () => {
+  const navigation = useNavigation();
   const {userData} = useAuthStore(
     useShallow((state: any) => ({
       userData: state.userData,
@@ -40,12 +44,21 @@ const CourseListScreen = () => {
     include_attendance_recap: 1,
   });
 
+  useEffect(() => {
+    navigation.setOptions(
+      appBar({
+        leading: <Leading title="Jadwal Kuliah" useBackButton={false} />,
+      }),
+    );
+  }, [navigation]);
+
   useFocusEffect(
     useCallback(() => {
       setStatusBarStyle({
-        style: 'dark-content',
-        backgroundColor: 'white',
+        style: 'light-content',
+        backgroundColor: COLORS.PRIMARY,
       });
+      refetch();
     }, []),
   );
 
@@ -108,6 +121,7 @@ const CourseListScreen = () => {
           keyExtractor={(_, i) => `course_${i}`}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
+          ListEmptyComponent={DataNotFound}
         />
       )}
       <PermissionModal ref={permissionModalRef} data={courseData} />
