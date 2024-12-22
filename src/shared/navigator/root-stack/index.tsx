@@ -39,7 +39,12 @@ const RootStack = () => {
       <Stack.Screen
         name="ScanQr"
         component={ScanScreen}
-        options={SCREEN_OPTIONS.DEFAULT}
+        options={{
+          ...SCREEN_OPTIONS.DEFAULT,
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
+        }}
       />
       <Stack.Screen
         name="ContactUs"

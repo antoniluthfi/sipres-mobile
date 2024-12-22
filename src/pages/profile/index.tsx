@@ -1,19 +1,23 @@
+import appBar from '../../shared/components/leading/AppBar';
 import Button from '../../shared/components/button';
 import Config from '../../shared/config/env.json';
+import FastImage from 'react-native-fast-image';
 import Input from '../../shared/components/Input';
-import React, {useCallback, useState} from 'react';
+import Leading from '../../shared/components/leading';
+import React, {useCallback, useEffect, useState} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
-import {Alert, Image, StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
+import {COLORS} from '../../shared/utils/colors';
 import {DummyProfile} from '../../assets/images';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useAuth} from '../../shared/context/AuthContext';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
-import FastImage from 'react-native-fast-image';
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   const api = useAxios();
   const {logout} = useAuth();
   const {userData} = useAuthStore(
@@ -37,11 +41,19 @@ const ProfileScreen = () => {
     }
   };
 
+  useEffect(() => {
+    navigation.setOptions(
+      appBar({
+        leading: <Leading title="Profil" useBackButton={false} />,
+      }),
+    );
+  }, [navigation]);
+
   useFocusEffect(
     useCallback(() => {
       setStatusBarStyle({
-        style: 'dark-content',
-        backgroundColor: 'white',
+        style: 'light-content',
+        backgroundColor: COLORS.PRIMARY,
       });
     }, []),
   );

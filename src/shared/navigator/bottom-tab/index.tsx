@@ -48,6 +48,9 @@ const BottomTab = () => {
         options={{
           headerShown: false,
           tabBarLabel: 'Profil',
+          headerStyle: {
+            backgroundColor: COLORS.PRIMARY,
+          },
         }}
       />
     </Tab.Navigator>

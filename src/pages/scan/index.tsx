@@ -1,14 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+import appBar from '../../shared/components/leading/AppBar';
+import Geolocation from 'react-native-geolocation-service';
+import Leading from '../../shared/components/leading';
 import React, {useEffect, useRef, useState} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
-import {ActivityIndicator, Alert, StyleSheet, Text, View} from 'react-native';
 import {COLORS} from '../../shared/utils/colors';
 import {FONTS} from '../../shared/utils/fonts';
 import {isIos} from '../../shared/utils/functions';
 import {useAppStateListener} from '../../shared/hooks/useAppStateListener';
 import {useShallow} from 'zustand/shallow';
+import {
+  ActivityIndicator,
+  Alert,
+  BackHandler,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {
   RouteProp,
   useIsFocused,
@@ -58,6 +68,14 @@ const ScanScreen = () => {
   });
 
   useEffect(() => {
+    navigation.setOptions(
+      appBar({
+        leading: <Leading title="Scan Kode QR" />,
+      }),
+    );
+  }, [navigation]);
+
+  useEffect(() => {
     let timeout: NodeJS.Timeout;
 
     if (isCameraInitialized) {
@@ -74,16 +92,50 @@ const ScanScreen = () => {
     setIsCameraInitialized(true);
   };
 
+  const getCurrentPosition = async () => {
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position.mocked) {
+            Alert.alert('Gagal', 'Silahkan matikan fake GPS', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  BackHandler.exitApp();
+                },
+              },
+            ]);
+            reject(new Error('Fake GPS detected'));
+          } else {
+            console.log(position.coords);
+            resolve(position.coords);
+          }
+        },
+        error => {
+          console.error('Geolocation error:', error);
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 10000,
+        },
+      );
+    });
+  };
+
   const handleScanQrCode = async () => {
     try {
       setIsLoading(true);
+
+      const location: any = await getCurrentPosition();
 
       const response = await api.post('/attendance/record', {
         course_meeting_id: route.params?.courseMeetingId,
         course_id: route.params?.courseId,
         student_id: userData?.id,
-        latitude: '-3.45555021',
-        longitude: '114.74124921',
+        latitude: location?.latitude?.toString() || '-',
+        longitude: location?.longitude?.toString() || '-',
         qr_code: qrCode,
         status: 'present',
         remarks: 'Absensi Menggunakan QR Code',
@@ -236,7 +288,8 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     backgroundColor: COLORS.WHITE,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
