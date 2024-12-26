@@ -1,4 +1,10 @@
-import React, {createContext, ReactNode, useContext, useEffect} from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import useAuthStore from '../data-store/useAuthStore';
 import useAxios from '../hooks/useAxios';
 import {Alert} from 'react-native';
@@ -8,6 +14,7 @@ import {useShallow} from 'zustand/shallow';
 interface AuthContextType {
   logout: () => void;
   login: () => void;
+  isErrorAuthenticateUser: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,6 +40,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     })),
   );
 
+  const [isErrorAuthenticateUser, setIsErrorAuthenticateUser] = useState(false);
+
   const logout = () => {
     setIsLogin(false);
     setUserData(null);
@@ -47,6 +56,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   const login = () => {
     setIsLogin(true);
     setRefreshTokenValid(true);
+    setIsErrorAuthenticateUser(false);
   };
 
   const getAuthenticatedUser = async () => {
@@ -55,6 +65,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       setUserData(response.data?.data || null);
     } catch (error: any) {
       console.log('error getAuthenticatedUser: ', error);
+      setIsErrorAuthenticateUser(true);
       if (userData?.id) {
         Alert.alert('Warning', error?.error, [
           {
@@ -79,7 +90,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   }, [isLogin, isRefreshTokenValid]);
 
   return (
-    <AuthContext.Provider value={{logout, login}}>
+    <AuthContext.Provider value={{logout, login, isErrorAuthenticateUser}}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,22 +2,7 @@ import useAxios from '../hooks/useAxios';
 import useSWR from 'swr';
 import {SWR_CONFIG} from '../utils/api';
 
-export type LocationData = {
-  id: number;
-  name: string;
-  latitude: string;
-  longitude: string;
-  radius: number;
-  file_path: string;
-  created_at: string;
-  updated_at: string;
-};
-
-export const useLocationList = ({
-  page = 1,
-  limit = 5,
-  search = '',
-}) => {
+export const useLocationDetails = ({id}: {id: number}) => {
   const axiosInstance = useAxios();
 
   // Fetcher menggunakan Axios
@@ -31,7 +16,7 @@ export const useLocationList = ({
   };
 
   // URL API dengan parameter
-  const apiUrl = `/location?page=${page}&limit=${limit}&search=${search}`;
+  const apiUrl = `/location/${id}`;
 
   // Memanfaatkan useSWR untuk fetching data
   const {data, error, isLoading, mutate} = useSWR(apiUrl, fetcher, {
@@ -40,7 +25,6 @@ export const useLocationList = ({
 
   return {
     data: data?.data || null,
-    pagination: data?.pagination || null,
     isLoading,
     isError: !!error,
     refetch: mutate, // SWR menyediakan `mutate` untuk me-refresh data

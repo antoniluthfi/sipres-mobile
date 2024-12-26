@@ -4,6 +4,7 @@ import {COLORS} from '../../shared/utils/colors';
 import {FONTS} from '../../shared/utils/fonts';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Logo} from '../../assets/icons';
+import {useAuth} from '../../shared/context/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
 import {
@@ -19,6 +20,8 @@ const SplashScreen = () => {
     })),
   );
 
+  const {isErrorAuthenticateUser} = useAuth();
+
   useEffect(() => {
     setStatusBarStyle({
       style: 'light-content',
@@ -28,7 +31,7 @@ const SplashScreen = () => {
     setTimeout(() => {
       requestCustomPermissions({
         onSuccess: () => {
-          if (userData?.id) {
+          if (userData?.id && !isErrorAuthenticateUser) {
             navigation.replace('MainTab');
           } else {
             navigation.replace('Login');
