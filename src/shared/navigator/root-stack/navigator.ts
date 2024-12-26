@@ -1,6 +1,7 @@
 type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
+  ForgotPassword: undefined;
   MainTab: undefined;
   Permission: undefined;
   ScanQr: {

@@ -2,6 +2,7 @@ import BottomTab from '../bottom-tab';
 import ClassFloorPlanDetailsScreen from '../../../pages/class-floor-plan-details';
 import ClassFloorPlanScreen from '../../../pages/class-floor-plan';
 import ContactUsScreen from '../../../pages/contact-us';
+import ForgotPasswordScreen from '../../../pages/forgot-password';
 import LoginScreen from '../../../pages/login';
 import PermissionScreen from '../../../pages/permission';
 import React from 'react';
@@ -25,6 +26,11 @@ const RootStack = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={SCREEN_OPTIONS.DEFAULT}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
         options={SCREEN_OPTIONS.DEFAULT}
       />
       <Stack.Screen

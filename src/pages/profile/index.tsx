@@ -94,12 +94,6 @@ const ProfileScreen = () => {
           disabled
           rightIcon={<Phone />}
         />
-        <Input
-          label="Tempat Tanggal Lahir"
-          value="Jakarta, 11 Juli 2000"
-          disabled
-          rightIcon={<Building />}
-        />
       </View>
 
       <Button
