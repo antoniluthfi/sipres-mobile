@@ -37,8 +37,8 @@ const CourseItem = ({
     return '';
   }, [item?.upcoming_schedule?.date]);
 
-  const startTime = item?.upcoming_schedule?.start_time?.substring(0, 5);
-  const endTime = item?.upcoming_schedule?.end_time?.substring(0, 5);
+  const courseStartTime = item?.upcoming_schedule?.start_time?.substring(0, 5);
+  const courseEndTime = item?.upcoming_schedule?.end_time?.substring(0, 5);
 
   const isQrCodeDisabled = (
     date: string,
@@ -86,7 +86,7 @@ const CourseItem = ({
               <Text style={styles.scheduleTitle}>Jadwal</Text>
               <Text style={styles.scheduleText}>{formattedDate}</Text>
               <Text style={styles.scheduleText}>
-                {startTime} - {endTime} WIB
+                {courseStartTime} - {courseEndTime} WIB
               </Text>
             </>
           ) : (

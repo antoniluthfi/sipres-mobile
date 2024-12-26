@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import appBar from '../../shared/components/leading/AppBar';
 import DataNotFound from '../../shared/components/data-not-found';
 import Filter from './components/filter';
@@ -9,12 +10,7 @@ import {COLORS} from '../../shared/utils/colors';
 import {setStatusBarStyle} from '../../shared/utils/functions';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useShallow} from 'zustand/shallow';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import {
   AttendanceRecord,
   useAttendanceRecordList,
@@ -30,10 +26,13 @@ const AttendanceHistoryScreen = () => {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState('');
+  const [page, setPage] = useState(1);
+  const [records, setRecords] = useState<AttendanceRecord[]>([]);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const {data, refetch, isLoading} = useAttendanceRecordList({
-    page: 1,
-    limit: 10,
+  const {data, refetch, isLoading, pagination} = useAttendanceRecordList({
+    page,
+    limit: 5,
     user_id: userData?.id,
     course_id: selectedCourseId,
   });
@@ -56,15 +55,33 @@ const AttendanceHistoryScreen = () => {
     }, []),
   );
 
-  // Fungsi untuk handle refresh
+  useEffect(() => {
+    if (data) {
+      if (page === 1) {
+        setRecords(data);
+      } else {
+        setRecords(prevRecords => [...prevRecords, ...data]);
+        setIsLoadingMore(false);
+      }
+    }
+  }, [data, page]);
+
   const handleRefresh = async () => {
-    setIsRefreshing(true); // Mulai refresh
+    setIsRefreshing(true);
+    setPage(1);
     try {
-      await refetch(); // Refetch data dari API
+      await refetch();
     } catch (error) {
       console.error('Failed to refresh:', error);
     } finally {
-      setIsRefreshing(false); // Akhiri refresh
+      setIsRefreshing(false);
+    }
+  };
+
+  const loadMore = () => {
+    if (!isLoadingMore && page < pagination?.totalPages) {
+      setIsLoadingMore(true);
+      setPage(prevPage => prevPage + 1);
     }
   };
 
@@ -76,7 +93,7 @@ const AttendanceHistoryScreen = () => {
     <View style={styles.screen}>
       <Filter onSubmit={setSelectedCourseId} />
 
-      {isLoading ? (
+      {isLoading && page === 1 ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.PRIMARY} />
         </View>
@@ -84,11 +101,18 @@ const AttendanceHistoryScreen = () => {
         <FlatList
           style={styles.list}
           contentContainerStyle={styles.listContent}
-          data={data}
+          data={records}
           renderItem={renderItem}
           keyExtractor={(_, i) => `course_${i}`}
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isLoadingMore ? (
+              <ActivityIndicator size="small" color={COLORS.PRIMARY} />
+            ) : null
+          }
           ListEmptyComponent={DataNotFound}
         />
       )}

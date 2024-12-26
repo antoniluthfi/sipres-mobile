@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import appBar from '../../shared/components/leading/AppBar';
 import CourseItem from './components/course-item';
 import DataNotFound from '../../shared/components/data-not-found';
@@ -86,12 +87,12 @@ const CourseListScreen = () => {
     return (
       <CourseItem
         item={item}
-        onPressPermission={data => {
-          setCourseData(data);
+        onPressPermission={val => {
+          setCourseData(val);
           handlePresentPermissionModalPress();
         }}
-        onPressSick={data => {
-          setCourseData(data);
+        onPressSick={val => {
+          setCourseData(val);
           handlePresentSickModalPress();
         }}
       />

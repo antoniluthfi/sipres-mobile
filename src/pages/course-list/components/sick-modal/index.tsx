@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import BSheetInput from '../../../../shared/components/bottom-sheet-input';
 import Button from '../../../../shared/components/button';
 import React, {forwardRef, useCallback, useMemo, useState} from 'react';
@@ -58,8 +60,6 @@ const SickModal = forwardRef<BottomSheetModal, PermissionModalProps>(
         formData.append('course_meeting_id', data?.upcoming_schedule?.id || '');
         formData.append('course_id', data?.course_id || '');
         formData.append('student_id', userData?.id || '');
-        formData.append('latitude', '-');
-        formData.append('longitude', '-');
         formData.append('qr_code', '-');
         formData.append('status', 'sick');
         formData.append('remarks', remarks);

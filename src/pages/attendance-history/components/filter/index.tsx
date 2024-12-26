@@ -73,10 +73,12 @@ const Filter = ({onSubmit}: FilterProps) => {
         },
       );
 
+      console.log(response.data);
       // Konversi arraybuffer menjadi string Base64
       const base64Data = btoa(
         String.fromCharCode(...new Uint8Array(response.data)),
       );
+      console.log({base64Data});
 
       const filePath = `${
         RNFS.DownloadDirectoryPath
