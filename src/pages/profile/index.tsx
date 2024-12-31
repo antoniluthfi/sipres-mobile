@@ -8,7 +8,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import useAuthStore from '../../shared/data-store/useAuthStore';
 import useAxios from '../../shared/hooks/useAxios';
 import {Alert, StyleSheet, View} from 'react-native';
-import {Building, GraduationCap, Mail, Phone, User} from 'lucide-react-native';
+import {GraduationCap, Mail, Phone, User} from 'lucide-react-native';
 import {COLORS} from '../../shared/utils/colors';
 import {DummyProfile} from '../../assets/images';
 import {setStatusBarStyle} from '../../shared/utils/functions';
@@ -75,7 +75,12 @@ const ProfileScreen = () => {
       />
 
       <View style={styles.inputContainer}>
-        <Input label="Nama" value="Antoni" disabled rightIcon={<User />} />
+        <Input
+          label="Nama"
+          value={userData?.name || '-'}
+          disabled
+          rightIcon={<User />}
+        />
         <Input
           label="NPM"
           value={userData?.identification_number || '-'}
