@@ -43,8 +43,12 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   const [isErrorAuthenticateUser, setIsErrorAuthenticateUser] = useState(false);
 
   const logout = () => {
-    setIsLogin(false);
-    setUserData(null);
+    useAuthStore.persist.clearStorage();
+    useAuthStore.setState({
+      isLogin: false,
+      userData: null,
+      isRefreshTokenValid: false,
+    });
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

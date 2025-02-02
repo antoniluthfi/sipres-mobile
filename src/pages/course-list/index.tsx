@@ -42,7 +42,7 @@ const CourseListScreen = () => {
     search: debounceSearch,
     user_id: userData?.id,
     include_upcoming_schedule: 1,
-    include_attendance_recap: 1,
+    include_attendance_recap: 0,
   });
 
   useEffect(() => {

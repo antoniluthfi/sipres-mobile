@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import BSheetInput from '../../../../shared/components/bottom-sheet-input';
 import Button from '../../../../shared/components/button';
-import React, {forwardRef, useCallback, useMemo, useState} from 'react';
+import React, {forwardRef, memo, useCallback, useMemo, useState} from 'react';
 import UploadImageInput from '../../../../shared/components/upload-image-input';
 import useAuthStore from '../../../../shared/data-store/useAuthStore';
 import useAxios from '../../../../shared/hooks/useAxios';
@@ -135,7 +135,7 @@ const PermissionModal = forwardRef<BottomSheetModal, PermissionModalProps>(
   },
 );
 
-export default PermissionModal;
+export default memo(PermissionModal);
 
 const styles = StyleSheet.create({
   contentContainer: {

@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {memo, ReactNode, useEffect, useState} from 'react';
 import {COLORS} from '../utils/colors';
 import {FONTS} from '../utils/fonts';
 import {
@@ -66,7 +66,7 @@ const Input = ({
   );
 };
 
-export default Input;
+export default memo(Input);
 
 const styles = StyleSheet.create({
   container: {
